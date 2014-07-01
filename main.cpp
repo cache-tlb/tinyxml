@@ -54,7 +54,25 @@ void load_config(char *config_file) {
 }
 
 int main() {
-    load_config("example.xml");
+    tixml::XMLDoc doc;
+    doc.Create("root");
+    tixml::XMLNode* root = doc.getRoot();
+    std::vector<tixml::XMLNode*> &root_children = root->children();
+    for (int i = 0; i < 10; i++) {
+        tixml::XMLNode* node = new tixml::XMLNode("node", "");
+        node->setAttrib("type", "node");
+        std::vector<tixml::XMLNode*> &node_children = node->children();
+        for (int j = 0; j < 2; j++){
+            tixml::XMLNode* leaf = new tixml::XMLNode("leaf", "");
+            leaf->setAttrib("type", "leaf");
+            node_children.push_back(leaf);
+        }
+        root_children.push_back(node);
+    }
+    doc.Save("example2.xml");
+    return 0;
+
+    /*load_config("config.xml");
     print_variable(input_filename);
     print_variable(meanshift_sp);
     print_variable(meanshift_sr);
@@ -71,5 +89,5 @@ int main() {
     print_variable(merge_swt_thres);
     print_variable(swt_filter_variance_mean_ratio);
     print_variable(ocr_lang);
-    return 0;
+    return 0;*/
 }
